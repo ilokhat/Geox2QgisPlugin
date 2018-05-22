@@ -27,8 +27,8 @@ public class PolySquarer {
 		Reader reader;
 		GeometryEngine.init();
 		AbstractGeomFactory factory = AbstractGeometryEngine.getFactory();
-		if (args.length != 3) {
-			System.out.println("Usage : squarer params.conf /path/to/input.shp /path/to/output.shp");
+		if (args.length != 2) {
+			System.out.println("Usage : squarer params.conf /path/to/input.shp");
 			System.exit(0);
 		}
 		try {
@@ -38,10 +38,11 @@ public class PolySquarer {
 			e.printStackTrace();
 		}
 		String inputShape = args[1];
-		String outPutShape = args[2];
+		//String outPutShape = args[2];
 		double rt = Double.parseDouble(creds.getProperty("rightTol"));
 		double ft = Double.parseDouble(creds.getProperty("flatTol"));
 		double srt = Double.parseDouble(creds.getProperty("semiRightTol"));
+		String outputShape = creds.getProperty("outputShape");
 
 		IPopulation<IFeature> polygonShp = ShapefileReader.read(inputShape);
 		SquarePolygonLS sqls = new SquarePolygonLS(rt, ft, srt);
@@ -62,7 +63,7 @@ public class PolySquarer {
 		System.out.println();
 		System.out.println("computed in " + (end - begin) / 1000000 + " ms");
 		System.out.println("-------------------------------------------");
-		System.out.println("Writing out shape : " + outPutShape);
-		ShapefileWriter.write(featC, outPutShape);
+		System.out.println("Writing out shape : " + outputShape);
+		ShapefileWriter.write(featC, outputShape);
 	}
 }
