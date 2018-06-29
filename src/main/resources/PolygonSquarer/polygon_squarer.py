@@ -198,10 +198,13 @@ class PolygonSquarer:
         self.dlg.comboBox.addItems(layer_list)
         return layers
 
-    def buildCommandLine(self, pluginPath, confFile, inputFile, outputFile):
+    def buildCommandLine(self, pluginPath, confFile, inputFile, outputFile, jPath):
         jarName = 'polysquarer.jar'
+        javaPath = 'java'
+        if os.name == "nt":
+                javaPath = jPath + '/' + javaPath
         cmds = []
-        cmds.append("java")
+        cmds.append(javaPath)
         cmds.append("-jar")
         cmds.append(pluginPath + '/' + jarName)
         cmds.append(confFile)
