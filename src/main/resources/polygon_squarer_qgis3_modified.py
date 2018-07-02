@@ -208,16 +208,20 @@ class PolygonSquarer:
         # remove the toolbar
         del self.toolbar
 
-    def buildCommandLine(self, pluginPath, confFile, inputFile, outputFile):
+    def buildCommandLine(self, pluginPath, confFile, inputFile, outputFile, jPath):
         jarName = 'polysquarer.jar'
+        javaPath = 'java'
+        if os.name == "nt":
+                javaPath = jPath + '/' + javaPath
         cmds = []
-        cmds.append("java")
+        cmds.append(javaPath)
         cmds.append("-jar")
         cmds.append(pluginPath + '/' + jarName)
         cmds.append(confFile)
         cmds.append(inputFile)
         cmd = " ".join(cmds)
         return cmd
+
 
     def sanitizePath(self, strPipe):
         pipe_pos = strPipe.index('|')
@@ -241,7 +245,9 @@ class PolygonSquarer:
             layerPath = self.sanitizePath(selectedLayer.dataProvider().dataSourceUri())
             outputPath = config.get('section', 'outputShape')
             timeout = float(config.get('section', 'timeout_secs')) * 1000
-            cmd = self.buildCommandLine(plugin_path, confFile, layerPath, outputPath)
+            jPath = config.get('section', 'javaPath')
+            print 'Java path set to ' + jPath
+            cmd = self.buildCommandLine(plugin_path, confFile, layerPath, outputPath, jPath)
             print(cmd)
             process = QProcess(self.iface)
             process.start(cmd)
