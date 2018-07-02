@@ -242,7 +242,9 @@ class PolygonSquarer:
             layerPath = self.sanitizePath(selectedLayer.dataProvider().dataSourceUri())
             outputPath = config.get('section', 'outputShape')
             timeout = float(config.get('section', 'timeout_secs')) * 1000
-            cmd = self.buildCommandLine(plugin_path, confFile, layerPath, outputPath)
+            jPath = config.get('section', 'javaPath')
+            print 'Java path set to ' + jPath
+            cmd = self.buildCommandLine(plugin_path, confFile, layerPath, outputPath, jPath)
             print cmd
             process = QProcess(self.iface)
             process.start(cmd)
